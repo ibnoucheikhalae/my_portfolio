@@ -146,35 +146,4 @@ export const projects: Project[] = [
         "Learned to work with messy real-world environmental data, handle missing values and temporal alignment challenges, and translate AI model outputs into actionable insights for non-technical stakeholders.",
     },
   },
-  {
-    slug: "heineken-hackathon-ai-system",
-    title: "Heineken Hackathon AI System",
-    summary:
-      "Prototype predictive maintenance system leveraging IoT data and machine-learning models, built during a hackathon.",
-    techStack: ["Python", "AI"],
-    category: "AI/Data",
-    githubUrl: "https://github.com",
-    highlights: [
-      "Predictive maintenance",
-      "IoT data integration",
-      "ML models",
-    ],
-    caseStudy: {
-      problem:
-        "Heineken's brewery equipment experiences unplanned downtime that disrupts production schedules and increases maintenance costs. The challenge was to build a system that could predict equipment failures before they occur using existing IoT sensor data.",
-      solution:
-        "Built a Python-based predictive maintenance prototype during a hackathon that ingests IoT sensor streams (temperature, vibration, pressure) and applies machine-learning models to detect anomalies and predict failure windows, allowing proactive scheduling of maintenance.",
-      features: [
-        "Real-time IoT sensor data ingestion pipeline",
-        "Anomaly detection using isolation forest and autoencoder models",
-        "Failure prediction with time-to-failure regression",
-        "Dashboard prototype for maintenance team alerts",
-        "Cost-benefit analysis of predictive vs reactive maintenance",
-      ],
-      results:
-        "The prototype demonstrated the ability to detect anomalous equipment behaviour with high precision on historical data, projecting significant reduction in unplanned downtime if deployed in production.",
-      learned:
-        "Gained experience building under tight hackathon constraints, prioritising high-impact features, and presenting technical solutions to business stakeholders. Deepened my understanding of time-series anomaly detection techniques.",
-    },
-  },
 ]
