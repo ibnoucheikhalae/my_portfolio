@@ -16,6 +16,7 @@ const fadeInVariants = {
 
 export default function FestivalNetworkPage() {
   const [isVisible, setIsVisible] = useState<{ [key: string]: boolean }>({})
+  const [expandedImage, setExpandedImage] = useState<string | null>(null)
 
   const observeElement = (id: string) => {
     if (typeof window !== "undefined") {
@@ -131,18 +132,54 @@ export default function FestivalNetworkPage() {
   ]
 
   const costs = [
-    { component: "Cisco 1921/K9 Router", unitPrice: "£253.71", quantity: 5, total: "£1,268.55" },
-    { component: "Cisco CBS350-48P-4G Switch", unitPrice: "£1,026", quantity: 10, total: "£10,260" },
     { component: "Cisco SF350-24P Switch", unitPrice: "£643.60", quantity: 29, total: "£18,560" },
+    { component: "Cisco CBS350-48P-4G Switch", unitPrice: "£1,026", quantity: 10, total: "£10,260" },
+    { component: "Cisco 1921/K9 Router", unitPrice: "£253.71", quantity: 5, total: "£1,268.55" },
+    { component: "RS PRO OS2 Fibre Optic Cable", unitPrice: "£1.17/m", quantity: "6,296m", total: "£7,366.32" },
     { component: "Excel Cat6 UTP Cable", unitPrice: "£0.48/m", quantity: "2,451m", total: "£1,176.48" },
-    { component: "RS PRO OS2 Fibre Cable", unitPrice: "£1.17/m", quantity: "6,296m", total: "£7,366.32" },
     { component: "Ubiquiti UniFi AP AC HD", unitPrice: "£319.00", quantity: 63, total: "£20,097" },
+    { component: "Underground Enclosure Box", unitPrice: "£25", quantity: 10, total: "£250" },
+    { component: "RJ45 Outdoor Connectors", unitPrice: "£4", quantity: 126, total: "£504" },
+    { component: "Warning Tape", unitPrice: "£1/m", quantity: "8,747m", total: "£8,747" },
+    { component: "Wireless AP & Switches Covers", unitPrice: "£32.99", quantity: 73, total: "£2,407.27" },
+    { component: "HDPE Conduit (100m rolls)", unitPrice: "£90", quantity: 63, total: "£5,670" },
+    { component: "Workers Wages", unitPrice: "£20/hr", quantity: "990 hrs", total: "£19,800" },
   ]
 
-  const totalCost = "£58,728.35"
+  const totalCost = "£94,909.62"
 
   return (
-    <>
+    <>{/* Image Modal */}
+      {expandedImage && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+          onClick={() => setExpandedImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh] w-full h-full" onClick={(e) => e.stopPropagation()}>
+            <button
+              onClick={() => setExpandedImage(null)}
+              className="absolute -top-10 right-0 text-white hover:text-primary transition-colors z-10 group"
+            >
+              <svg
+                className="w-8 h-8 group-hover:scale-110 transition-transform"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <Image
+              src={`/images/${expandedImage}.jpg`}
+              alt="Expanded view"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+      )}
+
+      
       <main className="min-h-screen bg-background">
         {/* Hero Section */}
         <section
@@ -300,7 +337,8 @@ export default function FestivalNetworkPage() {
               {["larea1", "larea2", "larea3"].map((img, i) => (
                 <div
                   key={i}
-                  className="group relative h-64 rounded-2xl border border-border overflow-hidden bg-card hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
+                  className="group relative h-64 rounded-2xl border border-border overflow-hidden bg-card hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer"
+                  onClick={() => setExpandedImage(img)}
                 >
                   <Image
                     src={`/images/${img}.jpg`}
@@ -308,6 +346,11 @@ export default function FestivalNetworkPage() {
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-sm font-medium">
+                      Click to expand
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
@@ -387,7 +430,8 @@ export default function FestivalNetworkPage() {
               {["parea1", "parea2", "parea3"].map((img, i) => (
                 <div
                   key={i}
-                  className="group relative h-64 rounded-2xl border border-border overflow-hidden bg-card hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
+                  className="group relative h-64 rounded-2xl border border-border overflow-hidden bg-card hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer"
+                  onClick={() => setExpandedImage(img)}
                 >
                   <Image
                     src={`/images/${img}.jpg`}
@@ -395,6 +439,11 @@ export default function FestivalNetworkPage() {
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity text-white text-sm font-medium">
+                      Click to expand
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
