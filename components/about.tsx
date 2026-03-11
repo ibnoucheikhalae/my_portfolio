@@ -1,107 +1,151 @@
-import Image from "next/image"
+"use client"
+
 import Link from "next/link"
-import { BrainCircuit, Smartphone, ShieldCheck, ArrowRight } from "lucide-react"
 import { AnimatedItem } from "@/components/animated-section"
 
-const highlights = [
-  {
-    icon: BrainCircuit,
-    title: "AI & Data",
-    description:
-      "Building intelligent systems with machine learning, data analysis, and predictive modelling.",
-  },
-  {
-    icon: Smartphone,
-    title: "Mobile (Flutter)",
-    description:
-      "Crafting cross-platform mobile experiences with Flutter and Dart for real-world applications.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Networking & Security",
-    description:
-      "Designing secure network architectures with VLAN segmentation, monitoring, and best practices.",
-  },
-]
+const interests = ["AI Research", "Sustainability", "Fintech", "Continuous Learning"]
 
 export function About() {
   return (
-    <section id="about" className="px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col gap-4">
-          <p className="text-sm font-medium uppercase tracking-widest text-primary">
-            About Me
-          </p>
-          <h2 className="text-3xl font-bold tracking-tight text-foreground md:text-4xl text-balance">
-            Background
-          </h2>
-        </div>
+    <section
+      id="about"
+      className="relative overflow-hidden"
+      style={{ padding: "clamp(60px,10vw,140px) clamp(20px,6vw,80px)", background: "#f7f3ee", borderTop: "1px solid rgba(0,0,0,0.07)" }}
+    >
+      {/* Watermark */}
+      <div
+        className="absolute right-[-20px] top-1/2 pointer-events-none select-none -rotate-90 -translate-y-1/2 font-black"
+        style={{
+          fontFamily: "var(--font-syne,'Syne'),sans-serif",
+          fontSize: "200px",
+          color: "rgba(0,0,0,0.03)",
+          letterSpacing: "12px",
+          whiteSpace: "nowrap",
+        }}
+      >
+        ABOUT
+      </div>
 
-        {/* Two-column layout: photo left, text right */}
-        <div className="mt-12 flex flex-col items-center gap-10 md:flex-row md:items-start md:gap-16">
-          {/* Photo */}
-          <div className="flex-shrink-0">
-            <div className="relative h-64 w-64 overflow-hidden rounded-2xl border border-border md:h-80 md:w-80">
-              <Image
-                src="/images/about.jpg"
-                alt="Alae Ibnou Cheikh"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute -inset-1 -z-10 rounded-2xl bg-primary/10 blur-lg" />
+      <div className="relative">
+        <AnimatedItem index={0}>
+          <div className="section-tag">About Me</div>
+
+          {/* Two-column: photo left, text right */}
+          <div className="flex gap-12 items-start max-md:flex-col">
+
+            {/* Left: circular profile photo */}
+            <div className="flex-shrink-0 flex flex-col items-center gap-3 max-md:w-full max-md:items-start">
+              <div
+                className="overflow-hidden rounded-2xl"
+                style={{
+                  width: "clamp(220px, 28vw, 320px)",
+                  height: "clamp(290px, 36vw, 420px)",
+                  border: "3px solid rgba(0,0,0,0.1)",
+                  boxShadow: "0 8px 32px rgba(0,0,0,0.10)",
+                  flexShrink: 0,
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/images/profileimage.jpg"
+                  alt="Alae Ibnoucheikh"
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none" }}
+                />
+              </div>
+              <span
+                style={{
+                  fontFamily: "var(--font-ibm-plex-mono,'IBM Plex Mono'),monospace",
+                  fontSize: 9,
+                  color: "#aaa",
+                  letterSpacing: "1.5px",
+                  textTransform: "uppercase",
+                }}
+              >
+                Alae Ibnoucheikh
+              </span>
             </div>
+
+            {/* Right: all text content */}
+            <div className="flex-1 min-w-0">
+
+          <div
+            className="font-black leading-[.92] mb-7"
+            style={{
+              fontFamily: "var(--font-syne,'Syne'),sans-serif",
+              fontSize: "clamp(36px, 4vw, 56px)",
+              letterSpacing: "-2px",
+              color: "#111",
+            }}
+          >
+            Builder.<br />
+            Analyst.<br />
+            <span style={{ color: "#555" }}>Thinker.</span>
           </div>
 
-          {/* Text */}
-          <div className="flex flex-col gap-6 leading-relaxed text-muted-foreground">
-            <p>
-              I am a motivated Computer Science student with a deep interest in
-              artificial intelligence, data analysis, and building impactful
-              technology. My passion lies in creating data-driven solutions that
-              address real-world challenges across diverse sectors.
-            </p>
-            <p>
-              I am particularly drawn to the intersection of sustainability,
-              fintech, and applied AI systems. I believe that technology, when
-              thoughtfully designed and deployed, has the power to drive
-              meaningful change in how we approach complex global problems.
-            </p>
-            <p>
-              Beyond the keyboard, I enjoy running, hiking, and continuous
-              learning. I am always exploring new frameworks, tools, and
-              methodologies to expand my skill set and deliver more effective
-              solutions.
-            </p>
+          <div
+            className="text-sm font-semibold leading-[1.6] mb-7"
+            style={{
+              fontFamily: "var(--font-ibm-plex-mono,'IBM Plex Mono'),monospace",
+              color: "#555",
+            }}
+          >
+            <span style={{ color: "#bbb", marginRight: 8 }}>{"// "}</span>
+            The projects on this page were not assignments. They were problems I chose to solve.
+          </div>
+
+          <p className="text-sm leading-[1.9] mb-4" style={{ color: "#555" }}>
+            I am a <span style={{ color: "#111", fontWeight: 600 }}>Computer Science MEng student</span> who builds things that work in the real world, not just in coursework submissions. From a Flutter app with 201 passing tests to an AI erosion prediction tool built at an environmental challenge, I ship.
+          </p>
+          <p className="text-sm leading-[1.9] mb-4" style={{ color: "#555" }}>
+            I am drawn to the places where technology intersects with something that matters: <span style={{ color: "#111", fontWeight: 600 }}>sustainability data</span> that changes how we protect coastlines, <span style={{ color: "#111", fontWeight: 600 }}>financial tools</span> that reach more people, <span style={{ color: "#111", fontWeight: 600 }}>AI systems</span> that surface the right insight at the right moment.
+          </p>
+          <p className="text-sm leading-[1.9] mb-6" style={{ color: "#555" }}>
+            Beyond the code, I run half-marathons, speak four languages, and have sat across the table from teams at <span style={{ color: "#111", fontWeight: 600 }}>J.P. Morgan</span> and <span style={{ color: "#111", fontWeight: 600 }}>IBM</span>. I bring the same discipline to all three.
+          </p>
+
+          {/* Interest pills */}
+          <div className="flex flex-wrap gap-[7px] mb-8">
+            {interests.map((interest) => (
+              <span
+                key={interest}
+                className="text-[9px] tracking-[0.5px] uppercase rounded-full px-[13px] py-[5px] transition-all duration-200 cursor-default"
+                style={{
+                  fontFamily: "var(--font-ibm-plex-mono,'IBM Plex Mono'),monospace",
+                  color: "#555",
+                  background: "rgba(0,0,0,0.04)",
+                  border: "1px solid rgba(0,0,0,0.08)",
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.2)"; e.currentTarget.style.color = "#111" }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(0,0,0,0.08)"; e.currentTarget.style.color = "#555" }}
+              >
+                {interest}
+              </span>
+            ))}
+          </div>
+
+          {/* CTA button */}
+          <div className="flex items-center gap-4">
             <Link
               href="/about"
-              className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary/80"
+              className="inline-flex items-center gap-2 px-7 py-[14px] rounded-md text-[13px] font-bold transition-all duration-[250ms]"
+              style={{
+                fontFamily: "var(--font-syne,'Syne'),sans-serif",
+                background: "#111",
+                color: "#f7f3ee",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#333" }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#111" }}
             >
-              Read more about me
-              <ArrowRight className="h-4 w-4" />
+              Read About Me →
             </Link>
           </div>
-        </div>
 
-        {/* 3 Highlight cards */}
-        <div className="mt-16 grid gap-6 grid-cols-1 md:grid-cols-3">
-          {highlights.map((item, i) => (
-            <AnimatedItem key={item.title} index={i} staggerMs={100}>
-              <div
-                className="group flex flex-col gap-4 rounded-2xl border border-border bg-card shadow-sm shadow-black/20 p-6 transition-all duration-200 hover:border-primary/50 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/8"
-              >
-                <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary/10 text-primary transition-transform group-hover:scale-110">
-                  <item.icon className="h-5 w-5" />
-                </div>
-                <h3 className="text-base font-semibold text-foreground">
-                  {item.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {item.description}
-                </p>
-              </div>
-            </AnimatedItem>
-          ))}
-        </div>
+            </div>{/* end right col */}
+
+          </div>{/* end two-col flex */}
+        </AnimatedItem>
       </div>
     </section>
   )
