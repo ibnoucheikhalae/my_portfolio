@@ -1,42 +1,56 @@
-import { Github, Linkedin, Mail } from "lucide-react"
+"use client"
 
 export function Footer() {
-  const currentYear = new Date().getFullYear()
-
   return (
-    <footer className="border-t border-border px-6 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 md:flex-row md:justify-between">
-        <p className="text-sm text-muted-foreground">
-          &copy; {currentYear} Alae Ibnou Cheikh. All rights reserved.
-        </p>
-
-        <div className="flex items-center gap-4">
+    <footer
+      style={{
+        padding: "28px 88px",
+        borderTop: "1px solid rgba(0,0,0,0.07)",
+        background: "#f7f3ee",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        gap: 12,
+      }}
+      className="max-md:px-6"
+    >
+      <p
+        style={{
+          fontFamily: "var(--font-ibm-plex-mono,'IBM Plex Mono'),monospace",
+          fontSize: 9,
+          color: "#999",
+          letterSpacing: "1px",
+          margin: 0,
+        }}
+      >
+        2026 Alae Ibnoucheikh · Computer Science · University of Portsmouth
+      </p>
+      <div style={{ display: "flex", gap: 20 }}>
+        {[
+          { label: "GitHub",   href: "https://github.com/ibnoucheikhalae" },
+          { label: "LinkedIn", href: "https://www.linkedin.com/in/alae-ibnou-cheikh-a9994b334/" },
+          { label: "Email",    href: "mailto:alaeibnoucheikh@gmail.com" },
+        ].map(link => (
           <a
-            href="https://github.com/ibnoucheikhalae"
-            target="_blank"
+            key={link.label}
+            href={link.href}
+            target={link.href.startsWith("mailto") ? undefined : "_blank"}
             rel="noopener noreferrer"
-            aria-label="GitHub"
-            className="text-muted-foreground transition-colors hover:text-primary"
+            style={{
+              fontFamily: "var(--font-ibm-plex-mono,'IBM Plex Mono'),monospace",
+              fontSize: 9,
+              color: "#999",
+              letterSpacing: "1px",
+              textDecoration: "none",
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.color = "#111010" }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.color = "#999" }}
           >
-            <Github className="h-5 w-5" />
+            {link.label}
           </a>
-          <a
-            href="https://www.linkedin.com/in/alae-ibnou-cheikh-a9994b334/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="LinkedIn"
-            className="text-muted-foreground transition-colors hover:text-primary"
-          >
-            <Linkedin className="h-5 w-5" />
-          </a>
-          <a
-            href="mailto:ibnoucheikhalae@gmail.com"
-            aria-label="Email"
-            className="text-muted-foreground transition-colors hover:text-primary"
-          >
-            <Mail className="h-5 w-5" />
-          </a>
-        </div>
+        ))}
       </div>
     </footer>
   )
