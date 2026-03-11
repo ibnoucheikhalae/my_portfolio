@@ -1,288 +1,517 @@
 "use client"
 
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowLeft, Smartphone, Lock, Filter, ShoppingCart, Code, Zap } from "lucide-react"
+import React, { useEffect } from "react"
+import "./union-shop.css"
 
 export default function UnionShopPage() {
-  const [expandedImage, setExpandedImage] = React.useState<string | null>(null)
+  useEffect(() => {
+    // Cursor animation
+    const cursor = document.getElementById("cursor")
+    const ring = document.getElementById("cursorRing")
+    let mx = 0,
+      my = 0,
+      rx = 0,
+      ry = 0
 
-  const features = [
-    {
-      title: "Secure Login & Auth",
-      icon: <Lock className="h-6 w-6" />,
-      description: "Secure authentication with session persistence across app restarts",
-    },
-    {
-      title: "Product Filtering",
-      icon: <Filter className="h-6 w-6" />,
-      description: "Category-based filtering and search for easy product discovery",
-    },
-    {
-      title: "Cart Management",
-      icon: <ShoppingCart className="h-6 w-6" />,
-      description: "Fully functional shopping cart with quantity management and checkout",
-    },
-    {
-      title: "Cross-Platform",
-      icon: <Smartphone className="h-6 w-6" />,
-      description: "Built with Flutter for seamless iOS and Android compatibility",
-    },
-    {
-      title: "State Management",
-      icon: <Code className="h-6 w-6" />,
-      description: "Provider pattern for efficient app state and data flow",
-    },
-    {
-      title: "Responsive Design",
-      icon: <Zap className="h-6 w-6" />,
-      description: "Optimized UI that adapts to different screen sizes and orientations",
-    },
-  ]
+    const handleMouseMove = (e: MouseEvent) => {
+      mx = e.clientX
+      my = e.clientY
+      if (cursor) {
+        cursor.style.left = mx - 6 + "px"
+        cursor.style.top = my - 6 + "px"
+      }
+    }
 
-  const techStack = ["Flutter", "Dart", "Firebase", "Provider", "Material Design"]
+    window.addEventListener("mousemove", handleMouseMove)
+
+    const animRing = () => {
+      rx += (mx - rx - 20) * 0.12
+      ry += (my - ry - 20) * 0.12
+      if (ring) {
+        ring.style.left = rx + "px"
+        ring.style.top = ry + "px"
+      }
+      requestAnimationFrame(animRing)
+    }
+    animRing()
+
+    // Scroll reveal for sections
+    const reveals = document.querySelectorAll(".reveal")
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => entry.target.classList.add("visible"), i * 80)
+          }
+        })
+      },
+      { threshold: 0.1 }
+    )
+
+    reveals.forEach((r) => observer.observe(r))
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove)
+      observer.disconnect()
+    }
+  }, [])
 
   return (
-    <>
-      {expandedImage && (
-        <div
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-          onClick={() => setExpandedImage(null)}
-        >
-          <div className="relative max-w-4xl max-h-[90vh] w-full h-full" onClick={(e) => e.stopPropagation()}>
-            <button
-              onClick={() => setExpandedImage(null)}
-              className="absolute -top-10 right-0 text-white hover:text-primary transition-colors z-10 group"
-            >
-              <svg
-                className="w-8 h-8 group-hover:scale-110 transition-transform"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            <Image
-              src={`/images/${expandedImage}.jpg`}
-              alt="Expanded view"
-              fill
-              className="object-contain"
-            />
-          </div>
+    <div className="union-shop">
+      <div className="cursor" id="cursor"></div>
+      <div className="cursor-ring" id="cursorRing"></div>
+
+      {/* Navigation */}
+      <nav>
+        <a href="/projects" className="nav-logo back-link">
+          ← Back to Projects
+        </a>
+        <div className="nav-links">
+          <a href="#overview">Overview</a>
+          <a href="#features">Features</a>
+          <a href="#tech">Tech</a>
+          <a href="#architecture">Architecture</a>
+          <a href="https://github.com/ibnoucheikhalae/union_shop" target="_blank">
+            GitHub ↗
+          </a>
         </div>
-      )}
+      </nav>
 
-      <main className="min-h-screen bg-background">
-        {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center px-6 pt-32 pb-24 overflow-hidden">
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
-            <svg className="absolute inset-0 opacity-10" width="100%" height="100%">
-              <defs>
-                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
-          </div>
+      {/* Hero */}
+      <section className="hero-modern" id="overview">
+        {/* Gradient mesh background */}
+        <div className="hero-mesh-bg">
+          <div className="mesh-orb mesh-orb-1"></div>
+          <div className="mesh-orb mesh-orb-2"></div>
+          <div className="mesh-orb mesh-orb-3"></div>
+        </div>
 
-          <div className="relative max-w-4xl mx-auto text-center">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-primary mb-8"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to Home
-            </Link>
-
-            <div className="space-y-6">
-              <div className="flex justify-center gap-2 flex-wrap">
-                {["Mobile", "E-Commerce", "Cross-Platform", "User Experience"].map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-foreground">
-                Union Shop E-Commerce
-              </h1>
-
-              <p className="text-xl text-muted-foreground">
-                Modern mobile shopping platform for seamless commerce
-              </p>
-
-              <p className="max-w-2xl mx-auto text-base text-muted-foreground leading-relaxed">
-                A fully-featured cross-platform mobile application built with Flutter, enabling union members to browse
-                products, apply filters, manage their cart, and complete purchases from their phones.
-              </p>
+        <div className="hero-container">
+          {/* Left column: Text & CTA */}
+          <div className="hero-content">
+            <div className="hero-label reveal-item">
+              <span className="label-dot"></span>
+              E-Commerce Mobile Platform
             </div>
-          </div>
-        </section>
 
-        {/* Problem Section */}
-        <section className="px-6 py-24 md:py-32">
-          <div className="mx-auto max-w-4xl">
-            <div className="rounded-2xl border border-border bg-card/50 backdrop-blur p-8 md:p-12">
-              <h2 className="text-3xl font-bold text-foreground mb-6">The Challenge</h2>
-              <p className="text-muted-foreground leading-relaxed mb-4">
-                Local union shops operated without a modern digital presence. Members had to visit the shop in person
-                to browse products and place orders, creating friction and limiting accessibility. Existing web-based
-                solutions weren't optimized for mobile, and there was no dedicated mobile app to serve this market.
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                The goal was to build a cross-platform mobile application that would provide a complete shopping
-                experience, from discovery to checkout, with a smooth and intuitive interface.
-              </p>
-            </div>
-          </div>
-        </section>
+            <h1 className="hero-title reveal-item">
+              Union<span className="title-accent">Shop</span>
+              <span className="title-period">.</span>
+            </h1>
 
-        {/* Solution Section */}
-        <section className="px-6 py-24 md:py-32 bg-card/30">
-          <div className="mx-auto max-w-4xl">
-            <h2 className="text-3xl font-bold text-foreground mb-12">Solution Overview</h2>
-
-            <p className="text-muted-foreground leading-relaxed mb-12">
-              I developed a fully-featured Flutter application that enables members to shop on-the-go. The app features
-              secure authentication, real-time product browsing with advanced filtering, and a persistent cart system
-              that syncs user preferences across sessions.
+            <p className="hero-subtext reveal-item">
+              A production-grade e-commerce mobile application built for the University of Portsmouth Student Union.
+              Full authentication, real-time cart management, custom merchandise personalisation, and cloud-synced user
+              profiles across iOS and Android.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {features.map((feature, i) => (
-                <div
-                  key={i}
-                  className="rounded-2xl border border-border bg-card p-6 hover:border-primary/50 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
-                >
-                  <div className="inline-flex h-10 w-10 rounded-lg bg-primary/10 text-primary items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    {feature.icon}
+            {/* Stats pills */}
+            <div className="hero-stats reveal-item">
+              <div className="stat-pill">
+                <span className="stat-number">201+</span>
+                <span className="stat-name">Tests</span>
+              </div>
+              <div className="stat-pill">
+                <span className="stat-number">15+</span>
+                <span className="stat-name">Screens</span>
+              </div>
+              <div className="stat-pill">
+                <span className="stat-number">3×</span>
+                <span className="stat-name">Auth Methods</span>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="hero-buttons reveal-item">
+              <a href="https://github.com/ibnoucheikhalae/union_shop" target="_blank" className="btn-hero btn-primary-hero">
+                <span>GitHub Repository</span>
+                <span className="btn-arrow">↗</span>
+              </a>
+              <a href="#features" className="btn-hero btn-secondary-hero">
+                <span>Explore Features</span>
+                <span className="btn-arrow">→</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Right column: Phone mockup */}
+          <div className="hero-showcase reveal-item">
+            <div className="showcase-glow"></div>
+            
+            <div className="phone-mockup-modern">
+              <div className="phone-notch"></div>
+              <div className="phone-screen">
+                <div className="app-header">
+                  <div className="app-header-logo">UnionShop</div>
+                  <div className="app-header-icons">
+                    <div className="app-icon"></div>
+                    <div className="app-icon"></div>
                   </div>
-                  <h3 className="font-semibold text-foreground mb-2">{feature.title}</h3>
-                  <p className="text-sm text-muted-foreground">{feature.description}</p>
                 </div>
-              ))}
+                <div className="app-banner">
+                  <div className="app-banner-circle"></div>
+                  <div className="app-banner-text">
+                    Autumn<br />
+                    Favourites
+                  </div>
+                  <div className="app-banner-sub">Shop the latest collection →</div>
+                </div>
+                <div className="app-grid">
+                  <div className="app-product-card">
+                    <div className="app-product-img">👕</div>
+                    <div className="app-product-name">Classic Hoodie</div>
+                    <div className="app-product-price">£29.99</div>
+                  </div>
+                  <div className="app-product-card">
+                    <div className="app-product-img">🎽</div>
+                    <div className="app-product-name">Sportswear</div>
+                    <div className="app-product-price">£24.99</div>
+                  </div>
+                  <div className="app-product-card">
+                    <div className="app-product-img">🎒</div>
+                    <div className="app-product-name">Tote Bag</div>
+                    <div className="app-product-price">£12.99</div>
+                  </div>
+                  <div className="app-product-card">
+                    <div className="app-product-img">📚</div>
+                    <div className="app-product-name">Stationery</div>
+                    <div className="app-product-price">£8.99</div>
+                  </div>
+                </div>
+                <div className="app-cart-bar">
+                  <div className="app-cart-text">🛒 Cart 2 items</div>
+                  <div className="app-cart-text">£54.98 →</div>
+                </div>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* Tech Stack Section */}
-        <section className="px-6 py-24 md:py-32">
-          <div className="mx-auto max-w-4xl">
-            <h2 className="text-3xl font-bold text-foreground mb-12">Technology Stack</h2>
+        {/* Scroll indicator */}
+        <div className="scroll-indicator reveal-item">
+          <span>Scroll</span>
+          <div className="scroll-dot"></div>
+        </div>
+      </section>
 
-            <div className="rounded-2xl border border-border bg-card p-8">
-              <div className="flex flex-wrap gap-3">
-                {techStack.map((tech) => (
-                  <span
-                    key={tech}
-                    className="inline-flex items-center px-4 py-2 rounded-lg border border-primary/30 bg-primary/10 text-primary text-sm font-medium"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
+      {/* Stats */}
+      <div className="stats reveal">
+        <div className="stat">
+          <div className="stat-number">
+            201<span>+</span>
+          </div>
+          <div className="stat-label">Passing unit, widget & integration tests</div>
+        </div>
+        <div className="stat-divider"></div>
+        <div className="stat">
+          <div className="stat-number">
+            15<span>+</span>
+          </div>
+          <div className="stat-label">Screens & page components built</div>
+        </div>
+        <div className="stat-divider"></div>
+        <div className="stat">
+          <div className="stat-number">
+            3<span>×</span>
+          </div>
+          <div className="stat-label">Auth methods Email, Google, Apple</div>
+        </div>
+        <div className="stat-divider"></div>
+        <div className="stat">
+          <div className="stat-number">
+            2<span>+</span>
+          </div>
+          <div className="stat-label">Cloud services integrated (Firebase + Firestore)</div>
+        </div>
+      </div>
 
-              <div className="mt-8 pt-8 border-t border-border space-y-4 text-muted-foreground">
+      {/* Features */}
+      <section id="features">
+        <div className="section-tag reveal">Features</div>
+        <h2 className="reveal">
+          Built for real<br />
+          users.
+        </h2>
+        <p className="section-desc reveal">
+          Every feature was designed to replicate and extend a production e-commerce experience not just as
+          coursework, but as a deployable product.
+        </p>
+
+        <div className="features-layout reveal">
+          <div className="feature-block">
+            <div className="feature-num">01</div>
+            <div className="feature-title">🔐 Authentication System</div>
+            <div className="feature-desc">
+              Full user auth with Email/Password, Google Sign-In, and Apple Sign-In. Session persistence, profile
+              management via Firestore, and password reset flows.
+            </div>
+          </div>
+          <div className="feature-block accent-block">
+            <div className="feature-num">02</div>
+            <div className="feature-title">🛒 Cart & Checkout</div>
+            <div className="feature-desc">
+              Real-time cart with add/remove/quantity management. Automatic VAT calculation (20%), free shipping
+              threshold at £50, and persistent cart storage across sessions.
+            </div>
+          </div>
+          <div className="feature-block">
+            <div className="feature-num">03</div>
+            <div className="feature-title">🎨 Print Shack Personalisation</div>
+            <div className="feature-desc">
+              Dynamic merchandise customisation users select product type, garment colour, font, and up to 3 lines
+              of personalised text with live preview updates.
+            </div>
+          </div>
+          <div className="feature-block">
+            <div className="feature-num">04</div>
+            <div className="feature-title">🔍 Search & Filtering</div>
+            <div className="feature-desc">
+              Global search across all product collections. Advanced filtering by price, name, and popularity.
+              Pagination for large catalogs with smooth navigation.
+            </div>
+          </div>
+          <div className="feature-block">
+            <div className="feature-num">05</div>
+            <div className="feature-title">📱 Responsive Design</div>
+            <div className="feature-desc">
+              Optimised for mobile-first with full desktop support. Adaptive layouts tested across device profiles
+              including iPhone, Pixel, and widescreen viewports.
+            </div>
+          </div>
+          <div className="feature-block">
+            <div className="feature-num">06</div>
+            <div className="feature-title">🧪 Test Coverage</div>
+            <div className="feature-desc">
+              201 passing tests across unit, widget, and integration layers. Covers edge cases, cart operations, auth
+              flows, search functionality, and form validation.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Tech Stack */}
+      <section id="tech" style={{ background: "var(--card)", padding: "100px 80px" }}>
+        <div className="section-tag reveal">Technology</div>
+        <h2 className="reveal">
+          The stack<br />
+          behind it.
+        </h2>
+        <p className="section-desc reveal">
+          Chosen for production-readiness, cross-platform reach, and real-world scalability.
+        </p>
+
+        <div className="tech-grid reveal">
+          <div className="tech-item">
+            <div className="tech-hover-accent"></div>
+            <div className="tech-icon">🐦</div>
+            <div className="tech-name">Flutter & Dart</div>
+            <div className="tech-desc">
+              Cross-platform UI framework enabling single codebase deployment to iOS, Android, and Web with native
+              performance.
+            </div>
+          </div>
+          <div className="tech-item">
+            <div className="tech-hover-accent"></div>
+            <div className="tech-icon">🔥</div>
+            <div className="tech-name">Firebase Auth</div>
+            <div className="tech-desc">
+              Secure authentication supporting Email/Password, Google, and Apple Sign-In with session management and
+              token refresh.
+            </div>
+          </div>
+          <div className="tech-item">
+            <div className="tech-hover-accent"></div>
+            <div className="tech-icon">☁️</div>
+            <div className="tech-name">Cloud Firestore</div>
+            <div className="tech-desc">
+              Real-time NoSQL cloud database for user profiles, persistent cart storage, and order management across
+              devices.
+            </div>
+          </div>
+          <div className="tech-item">
+            <div className="tech-hover-accent"></div>
+            <div className="tech-icon">🔑</div>
+            <div className="tech-name">Google & Apple OAuth</div>
+            <div className="tech-desc">
+              Social authentication providers integrated for frictionless sign-in using industry-standard OAuth 2.0
+              flows.
+            </div>
+          </div>
+          <div className="tech-item">
+            <div className="tech-hover-accent"></div>
+            <div className="tech-icon">💾</div>
+            <div className="tech-name">SharedPreferences</div>
+            <div className="tech-desc">
+              Local data persistence layer for offline-first cart storage and user settings, synced with Firestore on
+              reconnect.
+            </div>
+          </div>
+          <div className="tech-item">
+            <div className="tech-hover-accent"></div>
+            <div className="tech-icon">🧪</div>
+            <div className="tech-name">Flutter Test Suite</div>
+            <div className="tech-desc">
+              Comprehensive testing framework covering unit, widget, and integration tests with 201 passing cases and
+              edge condition coverage.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Architecture */}
+      <section className="arch-section" id="architecture">
+        <div className="arch-grid">
+          <div className="arch-text reveal">
+            <div className="section-tag">Architecture</div>
+            <h3>
+              Clean, layered<br />
+              structure.
+            </h3>
+
+            <div className="arch-point">
+              <div className="arch-point-icon">🏗️</div>
+              <div className="arch-point-text">
+                <h4>Service Layer Pattern</h4>
                 <p>
-                  <span className="text-primary font-semibold">Flutter & Dart:</span> Enables single codebase for iOS
-                  and Android, reducing development time while maintaining native performance.
+                  Business logic cleanly separated into AuthService, CartService, and SearchService fully testable
+                  and independent of UI.
                 </p>
+              </div>
+            </div>
+            <div className="arch-point">
+              <div className="arch-point-icon">🔄</div>
+              <div className="arch-point-text">
+                <h4>Reactive State Management</h4>
                 <p>
-                  <span className="text-primary font-semibold">Firebase:</span> Provides authentication, real-time
-                  database, and cloud functions for backend services.
+                  Real-time UI updates driven by Firestore streams, ensuring cart badges and profile data stay in sync
+                  instantly.
                 </p>
+              </div>
+            </div>
+            <div className="arch-point">
+              <div className="arch-point-icon">📦</div>
+              <div className="arch-point-text">
+                <h4>Modular Component Design</h4>
                 <p>
-                  <span className="text-primary font-semibold">Provider Pattern:</span> State management solution for
-                  efficient app state handling and data flow.
+                  Reusable widget library including ProductCard, CollectionCard, AppHeader, and Footer composable
+                  across all 15+ screens.
                 </p>
               </div>
             </div>
           </div>
-        </section>
 
-        {/* Results Section */}
-        <section className="px-6 py-24 md:py-32 bg-card/30">
-          <div className="mx-auto max-w-4xl">
-            <h2 className="text-3xl font-bold text-foreground mb-12">Results & Impact</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="rounded-2xl border border-primary/30 bg-primary/5 p-8">
-                <h3 className="text-lg font-semibold text-primary mb-3">Delivery</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Delivered a production-ready prototype with all core features implemented and tested on both iOS and
-                  Android platforms.
-                </p>
-              </div>
-
-              <div className="rounded-2xl border border-primary/30 bg-primary/5 p-8">
-                <h3 className="text-lg font-semibold text-primary mb-3">Capabilities</h3>
-                <p className="text-muted-foreground leading-relaxed">
-                  Demonstrated strong competence in cross-platform mobile development, UX design, and building
-                  production-grade applications.
-                </p>
-              </div>
+          <div className="arch-diagram reveal">
+            <div className="arch-layer">
+              <div className="arch-dot"></div>
+              <div className="arch-label">UI Layer Pages & Widgets</div>
+              <div className="arch-sub">Flutter</div>
+            </div>
+            <div className="arch-arrow">↕</div>
+            <div className="arch-layer">
+              <div className="arch-dot orange"></div>
+              <div className="arch-label">Service Layer Business Logic</div>
+              <div className="arch-sub">Dart</div>
+            </div>
+            <div className="arch-arrow">↕</div>
+            <div className="arch-layer">
+              <div className="arch-dot blue"></div>
+              <div className="arch-label">Data Models Products & Cart</div>
+              <div className="arch-sub">Dart</div>
+            </div>
+            <div className="arch-arrow">↕</div>
+            <div className="arch-layer">
+              <div className="arch-dot purple"></div>
+              <div className="arch-label">Firebase Auth & Firestore</div>
+              <div className="arch-sub">Cloud</div>
+            </div>
+            <div className="arch-arrow">↕</div>
+            <div className="arch-layer">
+              <div className="arch-dot"></div>
+              <div className="arch-label">Local Persistence SharedPrefs</div>
+              <div className="arch-sub">Device</div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Learnings Section */}
-        <section className="px-6 py-24 md:py-32">
-          <div className="mx-auto max-w-4xl">
-            <h2 className="text-3xl font-bold text-foreground mb-12">Key Learnings</h2>
+      {/* Development Journey */}
+      <section style={{ padding: "100px 80px" }}>
+        <div className="section-tag reveal">Process</div>
+        <h2 className="reveal">
+          How it<br />
+          was built.
+        </h2>
+        <p className="section-desc reveal">
+          Developed iteratively following Agile principles committing small, meaningful changes throughout the build
+          cycle.
+        </p>
 
-            <div className="rounded-2xl border border-border bg-card p-8">
-              <ul className="space-y-4">
-                <li className="flex items-start gap-4">
-                  <span className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                  <span className="text-muted-foreground">
-                    <span className="text-primary font-semibold">State Management Trade-offs:</span> Deep dive into
-                    Provider vs Riverpod patterns, understanding when each is optimal for different app architectures.
-                  </span>
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                  <span className="text-muted-foreground">
-                    <span className="text-primary font-semibold">Offline-First Design:</span> Importance of designing
-                    mobile experiences that work seamlessly online and offline, with proper synchronization logic.
-                  </span>
-                </li>
-                <li className="flex items-start gap-4">
-                  <span className="h-2 w-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                  <span className="text-muted-foreground">
-                    <span className="text-primary font-semibold">Cart Edge Cases:</span> Handling complex scenarios like
-                    out-of-stock items, cart persistence, quantity updates, and payment flow interruptions.
-                  </span>
-                </li>
-              </ul>
+        <div className="timeline reveal">
+          <div className="timeline-item">
+            <div className="timeline-phase">Phase 1 Foundation</div>
+            <div className="timeline-title">Static UI & Navigation</div>
+            <div className="timeline-desc">
+              Built the core navigation architecture, homepage layout, and static page shells. Established the routing
+              system and reusable component library from the ground up.
             </div>
           </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="px-6 py-24">
-          <div className="mx-auto max-w-2xl text-center rounded-2xl border border-border bg-card p-12">
-            <h3 className="text-2xl font-bold text-foreground mb-4">View the Code</h3>
-            <p className="text-muted-foreground mb-8">Explore the full project on GitHub to see the implementation</p>
-            <a
-              href="https://github.com/ibnoucheikhalae/union_shop"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary-hover hover:scale-[1.03] hover:shadow-lg hover:shadow-primary/20"
-            >
-              View on GitHub
-              <ArrowLeft className="h-4 w-4 rotate-180" />
-            </a>
+          <div className="timeline-item">
+            <div className="timeline-phase">Phase 2 Data Layer</div>
+            <div className="timeline-title">Dynamic Products & Collections</div>
+            <div className="timeline-desc">
+              Introduced data models for products and collections. Implemented filtering, sorting, and pagination.
+              Connected UI components to service-layer data sources.
+            </div>
           </div>
-        </section>
-      </main>
-    </>
+          <div className="timeline-item">
+            <div className="timeline-phase">Phase 3 Commerce</div>
+            <div className="timeline-title">Cart, Checkout & Personalisation</div>
+            <div className="timeline-desc">
+              Built full cart management with persistent storage, VAT calculations, and the Print Shack personalisation
+              engine with live preview updates.
+            </div>
+          </div>
+          <div className="timeline-item">
+            <div className="timeline-phase">Phase 4 Cloud Integration</div>
+            <div className="timeline-title">Firebase Auth & Firestore</div>
+            <div className="timeline-desc">
+              Integrated Firebase Authentication with three sign-in methods. Connected user profiles and cart
+              persistence to Firestore for real-time cross-device sync.
+            </div>
+          </div>
+          <div className="timeline-item">
+            <div className="timeline-phase">Phase 5 Quality</div>
+            <div className="timeline-title">Testing & Refinement</div>
+            <div className="timeline-desc">
+              Wrote 201 comprehensive tests across unit, widget, and integration layers. Fixed edge cases, improved
+              responsive layouts, and optimised performance across device profiles.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer>
+        <div className="footer-left">
+          <h3>Alae Ibnoucheikh</h3>
+          <p>MEng Computer Science · University of Portsmouth</p>
+        </div>
+        <div className="footer-links">
+          <a href="https://github.com/ibnoucheikhalae/union_shop" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+            </svg>
+            GitHub
+          </a>
+          <a href="https://www.linkedin.com/in/alae-ibnou-cheikh-a9994b334/" target="_blank">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+            </svg>
+            LinkedIn
+          </a>
+          <a href="mailto:ibnoucheikhalae@gmail.com">✉ Contact</a>
+        </div>
+      </footer>
+    </div>
   )
 }
-
-import React from "react"
